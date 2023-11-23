@@ -1,7 +1,7 @@
-package com.teste.primeiroexemplo.controller;
+package com.teste.primeiroexemplo.view.controller;
 
-import com.teste.primeiroexemplo.model.Produto;
 import com.teste.primeiroexemplo.services.ProdutoService;
+import com.teste.primeiroexemplo.shared.ProdutoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +22,17 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping("/obtertodos")
-    public List<Produto> getTodos(){
+    public List<ProdutoDTO> getTodos(){
         return produtoService.findTodos();
     }
 
     @GetMapping("/obterPorId/{id}")
-    public Produto getPorId(@PathVariable Long id){
+    public ProdutoDTO getPorId(@PathVariable Long id){
         return produtoService.findPorId(id);
     }
 
     @PostMapping("/adicionar")
-    public Produto adicionarProduto(@RequestBody Produto produto){
+    public ProdutoDTO adicionarProduto(@RequestBody ProdutoDTO produto){
         return produtoService.insert(produto);
     }
 
@@ -42,7 +42,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public Produto atualizar(@PathVariable Long id, @RequestBody Produto produto){
+    public ProdutoDTO atualizar(@PathVariable Long id, @RequestBody ProdutoDTO produto){
         return produtoService.update(id, produto);
     }
 
