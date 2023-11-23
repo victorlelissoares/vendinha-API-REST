@@ -2,6 +2,7 @@ package com.teste.primeiroexemplo.view.controller;
 
 import com.teste.primeiroexemplo.services.ProdutoService;
 import com.teste.primeiroexemplo.shared.ProdutoDTO;
+import com.teste.primeiroexemplo.view.model.ProdutoRequest;
 import com.teste.primeiroexemplo.view.model.ProdutoResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,20 +45,23 @@ public class ProdutoController {
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ProdutoResponse> adicionarProduto(@RequestBody ProdutoDTO produto){
-        ProdutoResponse produtoResponse = new ModelMapper().map(produtoService.insert(produto), ProdutoResponse.class);
-        return new ResponseEntity<>(produtoResponse, HttpStatus.OK);
+    public ResponseEntity<ProdutoResponse> adicionarProduto(@RequestBody ProdutoRequest produto){
+        ProdutoDTO produtoDTO = new ModelMapper().map(produto, ProdutoDTO.class);
+        ProdutoResponse produtoResponse = new ModelMapper().map(produtoService.insert(produtoDTO), ProdutoResponse.class);
+        return new ResponseEntity<>(produtoResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deletar/{id}")
-    public void deletar(@PathVariable Long id){
+    public ResponseEntity<?> deletar(@PathVariable Long id){
         produtoService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<ProdutoResponse> atualizar(@PathVariable Long id, @RequestBody ProdutoDTO produto){
-        ProdutoResponse produtoResponse = new ModelMapper().map(produtoService.update(id, produto), ProdutoResponse.class);
-        return new ResponseEntity<>(produtoResponse, HttpStatus.OK);
+    public ResponseEntity<ProdutoResponse> atualizar(@PathVariable Long id, @RequestBody ProdutoRequest produto){
+        ProdutoDTO produtoDTO = new ModelMapper().map(produto, ProdutoDTO.class);
+        ProdutoResponse produtoResponse = new ModelMapper().map(produtoService.update(id, produtoDTO), ProdutoResponse.class);
+        return ResponseEntity.ok(produtoResponse);
     }
 
 }
