@@ -52,6 +52,10 @@ public class ProdutoService {
     }
 
     public ProdutoDTO update(Long idProduto, ProdutoDTO produtoDto){
+
+        if(!produtoRepository.existsById(idProduto))
+            throw new ResourceNotFoundException("Produto não encontrado para ser atualizado");
+
         produtoDto.setId(idProduto);
         Produto produtoNovo = new ModelMapper().map(produtoDto, Produto.class);
         produtoRepository.save(produtoNovo);
